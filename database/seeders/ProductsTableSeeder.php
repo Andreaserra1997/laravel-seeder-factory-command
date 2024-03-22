@@ -18,22 +18,30 @@ class ProductsTableSeeder extends Seeder
     public function run(Faker $faker)
     {
 
-        $highlightsCount = 0;
-        for ($i = 0; $i < 100; $i++) {
-            $highlight = ($highlightsCount < 5) ? true : false;
-            $product = Product::create([
-                'name'          => $faker->word(),
-                'description'   => $faker->text(200),
-                'img'           => 'https://picsum.photos/id/' . rand(1, 50) . '/500/400',
-                'codeEan'       => $faker->randomNumber(5, true),
-                'price'         => $faker->randomFloat(2, 1, 100),
-                'highlight'     => $highlight,
-                'creation'      => $faker->date(),
-                'edit'          => $faker->date()
-            ]);
-            if ($highlight) {
-                $highlightsCount++;
-            }
+        $category_ids = Category::all()->pluck('id');
+
+        for ($i = 0; $i < 5; $i++) {
+            $product = new Product;
+            $product->category_id = $faker->randomElement($category_ids);
+            $product->name = $faker->words(2, true);
+            $product->description = $faker->paragraphs(4, true);
+            $product->image = $faker->imageUrl(640, 480, 'cafè', true);
+            $product->isbn = $faker->randomNumber(7, true) . $faker->randomNumber(6, true);
+            $product->price = $faker->randomFloat(2, 20, 100);
+            $product->featured = 1;
+            $product->save();
+        }
+
+        for ($i = 0; $i < 95; $i++) {
+            $product = new Product;
+            $product->category_id = $faker->randomElement($category_ids);
+            $product->name = $faker->words(2, true);
+            $product->description = $faker->paragraphs(4, true);
+            $product->image = $faker->imageUrl(640, 480, 'cafè', true);
+            $product->isbn = $faker->randomNumber(7, true) . $faker->randomNumber(6, true);
+            $product->price = $faker->randomFloat(2, 20, 100);
+            $product->featured = 0;
+            $product->save();
         }
     }
 }

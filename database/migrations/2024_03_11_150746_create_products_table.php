@@ -17,12 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->string('img', 255);
-            $table->string('codeEan');
-            $table->string('price');
-            $table->boolean('highlight');
-            $table->dateTime('creation');
-            $table->dateTime('edit');
+            $table->string('image');
+            $table->char('isbn', 13);
+            $table->float('price', 8, 2);
+            $table->boolean('featured');
             $table->timestamps();
         });
     }
